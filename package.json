@@ -19,5 +19,9 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "type":"module"
+  "type":"module",
+  "engines": {
+    "node": "16.16.0",
+    "npm": "8.11.0"
+  }
 }
