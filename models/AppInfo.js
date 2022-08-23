@@ -1,20 +1,20 @@
 import mongoose from "mongoose";
 
 const appSchema = mongoose.Schema({
+    uid: {          // ID of user
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users'
+    },
     name: String,   // app name
     type: String,   // type of app
     status: String, // validation status
     cat: String,    // category
-    TNC: {          // T&C Upload
-        data: Buffer,
-        contentType: String
-    },
-    Manifest: {          // Reason Manifest
-        data: Buffer,
-        contentType: String
-    } 
+    repId: {        // report ID
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Reports'
+    }
 })
 
-var appInfo = mongoose.model('Users',appSchema);
+var appInfo = mongoose.model('Apps',appSchema);
 
 export default appInfo;

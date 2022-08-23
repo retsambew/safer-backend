@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
-    uid: String,        // user id from firebase auth
-    orgName: String,    // Organisation name
+    email: String,      
+    pass: String,
     bId: String,        // Business ID
     devId: String,      // Developer ID
+    orgName: String,    // Organisation name
     apps: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Apps'

@@ -5,6 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import usersRoute from './routes/users.js';
+import appsRoute from './routes/apps.js';
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors());
 
 app.use('/users', usersRoute);
+app.use('/apps', appsRoute);
 
 dotenv.config();
 
