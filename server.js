@@ -18,7 +18,7 @@ app.use('/apps', appsRoute);
 
 dotenv.config();
 
-const CONNECTION_URL= `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.9rxt2zt.mongodb.net/?retryWrites=true&w=majority`;
+const CONNECTION_URL= `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.hgojy.mongodb.net/?retryWrites=true&w=majority`;
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})
