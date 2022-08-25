@@ -1,4 +1,6 @@
 import model from '../models/reportInfo.js';
+import axios from 'axios';
+import cheerio from 'cheerio';
 
 export const generateReport = async (req,res,app) => {
     const { uid, tnc, manifest}=req.body;
@@ -26,4 +28,19 @@ export const getReport = async (req,res) => {
     }catch(err){
         res.status(404).json({message: err.message})
     }
+}
+
+const getScrap = (url) => {
+    axios(url)
+        .then(response => {
+            const html = response.data;
+            console.log(html)
+            const cheer = cheerio.load(html)
+            let ourData = ""
+            cheer('body',html).each(()=>{
+                const text=cheer(this).text()
+                ourData+=text
+            })
+            // console.log(text)
+        }).catch(err => console.log(err))
 }
