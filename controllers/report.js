@@ -1,9 +1,17 @@
-import model from '../models/reportInfo.js';
-import axios from 'axios';
-import cheerio from 'cheerio';
+import model from "../models/reportInfo.js";
+import axios from "axios";
+import request from "request-promise";
+import cheerio from "cheerio";
+import { spawn } from "child_process";
 
-export const generateReport = async (req, res, app) => {
-  const { uid, tnc, manifest } = req.body;
+export const generateReport = async (uid, tnc, manifest, app) => {
+  const pyProg = spawn("python", ["./../pypy.py"]);
+
+  pyProg.stdout.on("data", function (data) {
+    console.log(data.toString());
+    res.write(data);
+    res.end("end");
+  });
 
   let score = 100;
   let status = "accepted";
@@ -22,6 +30,7 @@ export const generateReport = async (req, res, app) => {
     manifest,
   });
   console.log(report);
+  console.log("in");
   try {
     await report.save();
 
@@ -33,26 +42,30 @@ export const generateReport = async (req, res, app) => {
   }
 };
 
-export const getReport = async (req,res) => {
-    try{
-        const report= await model.find({app: req.params.app});
-        res.status(200).json(report);
-    }catch(err){
-        res.status(404).json({message: err.message})
-    }
-}
+export const getReport = async (req, res) => {
+  try {
+    const report = await model.find({ app: req.params.app });
+    res.status(200).json(report);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
 
-const getScrap = (url) => {
-    axios(url)
-        .then(response => {
-            const html = response.data;
-            console.log(html)
-            const cheer = cheerio.load(html)
-            let ourData = ""
-            cheer('body',html).each(()=>{
-                const text=cheer(this).text()
-                ourData+=text
-            })
-            // console.log(text)
-        }).catch(err => console.log(err))
-}
+export const getScrap = (url) => {
+  const pyProg = spawn("python", ["./scrap.py", url]);
+  console.log(pyProg);
+  return new Promise((resolve, reject) => {
+    pyProg.stdout.on("data", (data) => {
+      const out = resolve(data.toString());
+      res.write(data);
+      res.end("end");
+      console.log(out);
+    });
+    pyProg.stderr.on("data", reject);
+  });
+  // pyProg.stdout.on("data", function (data) {
+  //   console.log(data.toString());
+  //   res.write(data);
+  //   res.end("end");
+  // });
+};

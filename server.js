@@ -7,6 +7,8 @@ import dotenv from "dotenv";
 import usersRoute from "./routes/users.js";
 import appsRoute from "./routes/apps.js";
 
+import { getScrap } from "./controllers/report.js";
+
 const app = express();
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
@@ -20,6 +22,8 @@ dotenv.config();
 
 const CONNECTION_URL = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.9rxt2zt.mongodb.net/?retryWrites=true&w=majority`;
 const PORT = process.env.PORT || 5000;
+
+getScrap("https://www.swiggy.com/terms-and-conditions");
 
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
